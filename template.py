@@ -21,7 +21,8 @@ list_of_classes=[
     "params.yaml",
     "requirements.txt",
     "setup.py",
-    "research/trials.ipynb"
+    "research/trials.ipynb",
+    "templates/index.html"
 ]
 
 for filepaths in list_of_classes:
