@@ -4,7 +4,8 @@ from pathlib import Path
 from cnnClassifier.utils.common import read_yaml, create_directories
 from cnnClassifier.entity.config_entity import (DataIngestionConfig,
                                                 PrepareBaseModelConfig,
-                                                PrepareCallBacksConfig)
+                                                PrepareCallBacksConfig,
+                                                TrainingModelConfig)
 
 
 
@@ -43,7 +44,7 @@ class ConfigurationManager:
         prepare_base_model_config = PrepareBaseModelConfig(
             root_dir = Path(config.root_dir),
             base_model_path= Path(config.base_model_path),
-            updated_base_model_path = Path(config.updated_base_model),
+            updated_base_model_path = Path(config.updated_base_model_path),
             params_image_size = self.params.IMAGE_SIZE,
             params_include_top = self.params.INCLUDE_TOP,
             params_weights = self.params.WEIGHTS,
@@ -67,3 +68,25 @@ class ConfigurationManager:
         )
             
         return prepare_callback_config 
+    
+    def get_training_config(self) -> TrainingModelConfig:
+        training = self.config.training
+        prepare_base_model_config = self.get_prepare_base_model_config()
+        params = self.params
+
+        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "Chicken-fecal-images")
+        create_directories([training.root_dir], verbose=True)
+
+        training_config = TrainingModelConfig(
+        root_dir=training.root_dir,
+        trained_model_path=training.trained_model_path,
+        updated_base_model_path=prepare_base_model_config.updated_base_model_path,
+        training_data=training_data,
+        params_epochs=params.EPOCHS,
+        params_batch_size=params.BATCH_SIZE,
+        params_is_augmentation=params.AUGMENTATION,
+        params_img_size=params.IMAGE_SIZE
+    )
+
+        return training_config
+
