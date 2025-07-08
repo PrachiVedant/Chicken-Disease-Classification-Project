@@ -30,7 +30,7 @@ class Training :
             validation_split = 0.20
         )
         dataflow_kwargs = dict(
-            target_size=self.config.params_img_size[:-1],
+            target_size=self.config.params_image_size[:-1],
             batch_size=self.config.params_batch_size,
             interpolation="bilinear"
         )
